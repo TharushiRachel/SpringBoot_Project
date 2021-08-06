@@ -1,13 +1,15 @@
 package com.example.demo.entity;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Getter
 @Setter
 @Entity
-@Table(name="user_account")
+@Table(name = "user_account")
 public class UserAccount {
     @Id
     private int empId;

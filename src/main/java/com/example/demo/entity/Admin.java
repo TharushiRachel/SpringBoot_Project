@@ -23,7 +23,6 @@ public class Admin {
 
     private String password;
 
-
     @OneToMany(mappedBy = "admin", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<Customer> customers;
 

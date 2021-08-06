@@ -1,13 +1,15 @@
 package com.example.demo.entity;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.Set;
 
 @Getter
 @Setter
 @Entity
-@Table(name="customer")
+@Table(name = "customer")
 public class Customer {
 
     @Id
@@ -29,11 +31,11 @@ public class Customer {
     private String password;
 
 
-    @OneToOne(fetch = FetchType.LAZY, cascade =  CascadeType.ALL, mappedBy = "customer")
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "customer")
     private Hall hall;
 
     @ManyToOne
-    @JoinColumn(name="admin_id", nullable = false)
+    @JoinColumn(name = "admin_id", nullable = false)
     private Admin admin;
 
     @OneToMany(mappedBy = "customer", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
