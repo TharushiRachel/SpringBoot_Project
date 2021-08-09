@@ -17,7 +17,7 @@ public class Admin {
 
     private String nic;
 
-    private String full_name;
+    private String fullName;
 
     private String email;
 
@@ -31,5 +31,6 @@ public class Admin {
 
     @OneToMany(mappedBy = "admin", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<EmployeeLeave> employeeLeaves;
+
 
 }
