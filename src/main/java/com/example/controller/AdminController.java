@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-
 public class AdminController {
 
 
@@ -14,8 +13,7 @@ public class AdminController {
     private AdminService adminService;
 
 
-    @PostMapping("${app.endpoint.adminsSearch}")
-    @ResponseBody
+    @PostMapping("${app.endpoint.adminSearch}")
     public void addAdmin(@RequestBody AdminRequest request) {
         adminService.save(request);
     }
