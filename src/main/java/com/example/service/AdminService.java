@@ -1,10 +1,9 @@
-package com.example.demo.service;
+package com.example.service;
 
-import com.example.demo.dto.AdminRequest;
-import com.example.demo.entity.Admin;
+import com.example.dto.AdminRequest;
+import com.example.entity.Admin;
 import org.springframework.stereotype.Service;
 
-@Service
 public interface AdminService {
 
     Admin save(AdminRequest admin);

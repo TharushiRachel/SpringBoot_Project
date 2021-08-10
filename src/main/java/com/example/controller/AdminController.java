@@ -1,7 +1,7 @@
-package com.example.demo.controller;
+package com.example.controller;
 
-import com.example.demo.dto.AdminRequest;
-import com.example.demo.service.AdminService;
+import com.example.dto.AdminRequest;
+import com.example.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
