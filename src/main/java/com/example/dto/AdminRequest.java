@@ -2,6 +2,7 @@ package com.example.dto;
 
 import lombok.Data;
 import lombok.NonNull;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.validation.constraints.*;
 
@@ -9,6 +10,7 @@ import javax.validation.constraints.*;
 public class AdminRequest {
 
     @NotNull
+    @UniqueElements
     @Pattern(regexp = "^([0-9]{9}[x|X|v|V]|[0-9]{12})$",message = "Invalid NIC")
     private String nic;
 
@@ -19,6 +21,7 @@ public class AdminRequest {
     @NotNull
     @NotEmpty(message = "Email cannot be empty")
     @Email(message = "Email should be valid")
+    @UniqueElements
     private String email;
 
     @NotNull
