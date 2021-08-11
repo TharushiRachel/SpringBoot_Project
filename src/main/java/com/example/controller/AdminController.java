@@ -16,7 +16,7 @@ public class AdminController {
 
 
     @PostMapping("${app.endpoint.adminSearch}")
-    public void addAdmin(@Validated @RequestBody AdminRequest request) {
+    public void addAdmin(@Validated @RequestBody AdminRequest request) throws Exception {
         adminService.save(request);
     }
 }

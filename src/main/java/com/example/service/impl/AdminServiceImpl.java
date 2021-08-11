@@ -7,18 +7,15 @@ import com.example.repository.AdminRepository;
 import com.example.service.AdminService;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import javax.xml.bind.ValidationException;
 import java.util.List;
-import java.util.Optional;
-import java.util.function.Predicate;
+
 
 @Service
 @Transactional
@@ -28,21 +25,18 @@ public class AdminServiceImpl implements AdminService {
     private AdminRepository adminRepository;
 
     @Override
-    public Admin save(AdminRequest request) {
+    public Admin save(AdminRequest request) throws Exception {
 
         BooleanBuilder booleanBuilder = new BooleanBuilder();
+        ModelMapper modelMapper = new ModelMapper();
         booleanBuilder.and(QAdmin.admin.nic.eq(request.getNic()));
-        booleanBuilder.and(QAdmin.admin.email.eq(request.getEmail()));
-        Iterable<Admin> admins = adminRepository.findAll(booleanBuilder);
+        booleanBuilder.or(QAdmin.admin.email.eq(request.getEmail()));
+        List<Admin> admins = (List<Admin>) adminRepository.findAll(booleanBuilder);
 
-
-
-        Admin admin = new Admin();
-        //set all values from request to this new admin object
-        admin.setNic(request.getNic());
-        admin.setFullName(request.getFullName());
-        admin.setEmail(request.getEmail());
-        admin.setPassword(request.getPassword());
+        if (admins.size()>0) {
+            throw new ValidationException("Admin already exists");
+        }
+            Admin admin = modelMapper.map(request, Admin.class);
 
         return adminRepository.save(admin);
     }

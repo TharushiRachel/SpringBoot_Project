@@ -16,6 +16,7 @@
 	<properties>
 		<java.version>11</java.version>
 		<querydsl.version>4.2.1</querydsl.version>
+		<model-mapper.version>2.3.6</model-mapper.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -71,6 +72,12 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>1.6.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>${model-mapper.version}</version>
 		</dependency>
 
 	</dependencies>
