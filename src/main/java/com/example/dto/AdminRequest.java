@@ -2,9 +2,6 @@ package com.example.dto;
 
 import lombok.Data;
 import lombok.NonNull;
-import org.hibernate.validator.constraints.UniqueElements;
-
-import javax.persistence.Column;
 import javax.validation.constraints.*;
 
 @Data

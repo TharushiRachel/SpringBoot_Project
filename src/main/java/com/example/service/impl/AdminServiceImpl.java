@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.xml.bind.ValidationException;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -19,6 +20,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     private AdminRepository adminRepository;
+
 
     @Override
     public Admin save(Admin admin) throws Exception {
@@ -31,7 +33,22 @@ public class AdminServiceImpl implements AdminService {
         if (admins.size() > 0) {
             throw new ValidationException("Admin already exists");
         }
-        return adminRepository.save(admin);
+
+     return adminRepository.save(admin);
+    }
+
+    @Override
+    public List<Admin> get() {
+        return adminRepository.findAll();
+    }
+
+    @Override
+    public Optional<Admin> findAdminById(int id) {
+        boolean exists = adminRepository.existsById(Integer.valueOf(id));
+        if(!exists){
+            throw  new IllegalStateException("Admin with "+id+" does not exists");
+        }
+        return adminRepository.findById(Integer.valueOf(id));
     }
 
 
