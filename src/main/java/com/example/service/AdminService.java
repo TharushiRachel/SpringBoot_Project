@@ -6,6 +6,6 @@ import org.springframework.stereotype.Service;
 
 public interface AdminService {
 
-    Admin save(AdminRequest admin) throws Exception;
+    Admin save(Admin admin) throws Exception;
 
 }
