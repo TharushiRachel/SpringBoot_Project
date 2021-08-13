@@ -1,5 +1,6 @@
 package com.example.service;
 
+import com.example.dto.AdminCreateResponse;
 import com.example.entity.Admin;
 
 import java.util.List;
@@ -12,6 +13,8 @@ public interface AdminService {
     List<Admin> get();
 
     Optional<Admin> findAdminById(int id);
+
+    void delete(int id);
 
 
 }

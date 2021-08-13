@@ -1,5 +1,6 @@
 package com.example.service.impl;
 
+import com.example.dto.AdminCreateResponse;
 import com.example.entity.Admin;
 import com.example.entity.QAdmin;
 import com.example.repository.AdminRepository;
@@ -33,15 +34,16 @@ public class AdminServiceImpl implements AdminService {
         if (admins.size() > 0) {
             throw new ValidationException("Admin already exists");
         }
-
-     return adminRepository.save(admin);
+        return adminRepository.save(admin);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Admin> get() {
         return adminRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Optional<Admin> findAdminById(int id) {
         boolean exists = adminRepository.existsById(Integer.valueOf(id));
@@ -49,6 +51,15 @@ public class AdminServiceImpl implements AdminService {
             throw  new IllegalStateException("Admin with "+id+" does not exists");
         }
         return adminRepository.findById(Integer.valueOf(id));
+    }
+
+    @Override
+    public void delete(int id) {
+        boolean exists= adminRepository.existsById(Integer.valueOf(id));
+        if(!exists){
+            throw  new IllegalStateException("Admin with id "+id+" does not exists");
+        }
+        adminRepository.deleteById(Integer.valueOf(id));
     }
 
 
