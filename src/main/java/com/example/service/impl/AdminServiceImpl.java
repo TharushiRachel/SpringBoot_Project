@@ -1,16 +1,21 @@
 package com.example.service.impl;
 
-import com.example.dto.AdminCreateResponse;
 import com.example.entity.Admin;
 import com.example.entity.QAdmin;
 import com.example.repository.AdminRepository;
 import com.example.service.AdminService;
 import com.querydsl.core.BooleanBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.xml.bind.ValidationException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,8 +44,16 @@ public class AdminServiceImpl implements AdminService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Admin> get() {
-        return adminRepository.findAll();
+    public List<Admin> get(int pageNo, int pageSize, String email) {
+        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(email));
+        Page<Admin> adminPage = adminRepository.findAll(paging);
+
+        if(adminPage.hasContent()){
+            return adminPage.getContent();
+        }
+        else {
+            return new ArrayList<Admin>();
+        }
     }
 
     @Transactional(readOnly = true)

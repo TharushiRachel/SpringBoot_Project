@@ -10,7 +10,7 @@ public interface AdminService {
 
     Admin save(Admin admin) throws Exception;
 
-    List<Admin> get();
+    List<Admin> get(int pageNo, int pageSize, String email);
 
     Optional<Admin> findAdminById(int id);
 
