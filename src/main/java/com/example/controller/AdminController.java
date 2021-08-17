@@ -1,8 +1,9 @@
 package com.example.controller;
 
-import com.example.dto.AdminCreateResponse;
-import com.example.dto.AdminRequest;
-import com.example.dto.AdminViewResponse;
+import com.example.dto.response.AdminCreateResponse;
+import com.example.dto.request.AdminRequest;
+import com.example.dto.response.AdminSuggestionResponse;
+import com.example.dto.response.AdminViewResponse;
 import com.example.entity.Admin;
 import com.example.service.AdminService;
 import org.modelmapper.ModelMapper;
@@ -14,6 +15,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 public class AdminController {
@@ -36,18 +38,20 @@ public class AdminController {
                                                  @RequestParam(defaultValue = "10") Integer pageSize,
                                                  @RequestParam(defaultValue = "email") String email){
        List<Admin> list = adminService.get(pageNo,pageSize,email);
-        return new ResponseEntity<List<Admin>>(list, new HttpHeaders(), HttpStatus.OK);
+        return new ResponseEntity<>(list, new HttpHeaders(), HttpStatus.OK);
     }
 
     @GetMapping("${app.endpoint.adminView}")
-    public ResponseEntity<Object> getById(@PathVariable int id, AdminViewResponse response) {
-        Optional<Admin> admin = adminService.findAdminById((int) id);
-        return new ResponseEntity<>(response.fetchAdminDetails(admin.get()), HttpStatus.OK);
+    public ResponseEntity<AdminViewResponse> getById(@PathVariable int id) {
+        Admin admin = adminService.findAdminById((id));
+        AdminViewResponse adminViewResponse = modelMapper.map(admin, AdminViewResponse.class);
+        return new ResponseEntity<>(adminViewResponse, HttpStatus.OK);
     }
 
     @GetMapping("${app.endpoint.adminSuggestion}")
-    public List<Admin> getAdminList(){
-        return adminService.getAdminList();
+    public List<AdminSuggestionResponse> getAdminList(){
+        List<Admin> adminList = adminService.getAdminList();
+       return adminList.stream().map(admin -> modelMapper.map(admin, AdminSuggestionResponse.class)).collect(Collectors.toList());
     }
 
     @DeleteMapping("${app.endpoint.adminDelete}")

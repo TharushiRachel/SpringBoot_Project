@@ -1,10 +1,12 @@
 package com.example.service.impl;
 
+import com.example.dto.response.AdminSuggestionResponse;
 import com.example.entity.Admin;
 import com.example.entity.QAdmin;
 import com.example.repository.AdminRepository;
 import com.example.service.AdminService;
 import com.querydsl.core.BooleanBuilder;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +20,7 @@ import javax.xml.bind.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -26,6 +29,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     private AdminRepository adminRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
 
     @Override
@@ -58,18 +64,19 @@ public class AdminServiceImpl implements AdminService {
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<Admin> findAdminById(int id) {
-        boolean exists = adminRepository.existsById(Integer.valueOf(id));
-        if(!exists){
-            throw  new IllegalStateException("Admin with "+id+" does not exists");
-        }
-        return adminRepository.findById(Integer.valueOf(id));
+    public Admin findAdminById(int id) {
+
+         return adminRepository.findById(id).orElseThrow(()->{
+             throw  new IllegalStateException("Admin with "+id+" does not exists");
+         });
     }
 
     @Override
     public List<Admin> getAdminList() {
         return adminRepository.findAll();
     }
+
+
 
     @Override
     public void delete(int id) {
