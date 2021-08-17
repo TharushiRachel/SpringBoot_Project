@@ -14,6 +14,8 @@ public interface AdminService {
 
     Optional<Admin> findAdminById(int id);
 
+    List<Admin> getAdminList();
+
     void delete(int id);
 
 

@@ -45,6 +45,11 @@ public class AdminController {
         return new ResponseEntity<>(response.fetchAdminDetails(admin.get()), HttpStatus.OK);
     }
 
+    @GetMapping("${app.endpoint.adminSuggestion}")
+    public List<Admin> getAdminList(){
+        return adminService.getAdminList();
+    }
+
     @DeleteMapping("${app.endpoint.adminDelete}")
     public void deleteAdmin(@PathVariable int id){
         adminService.delete(id);

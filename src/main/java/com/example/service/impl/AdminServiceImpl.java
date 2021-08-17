@@ -67,6 +67,11 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public List<Admin> getAdminList() {
+        return adminRepository.findAll();
+    }
+
+    @Override
     public void delete(int id) {
         boolean exists= adminRepository.existsById(Integer.valueOf(id));
         if(!exists){
