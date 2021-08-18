@@ -2,6 +2,7 @@ package com.example.controller;
 
 import com.example.dto.response.AdminCreateResponse;
 import com.example.dto.request.AdminRequest;
+import com.example.dto.response.AdminDeleteResponse;
 import com.example.dto.response.AdminSuggestionResponse;
 import com.example.dto.response.AdminViewResponse;
 import com.example.entity.Admin;
@@ -55,7 +56,11 @@ public class AdminController {
     }
 
     @DeleteMapping("${app.endpoint.adminDelete}")
-    public void deleteAdmin(@PathVariable int id){
-        adminService.delete(id);
+    public ResponseEntity<Object> deleteAdmin(@PathVariable int id, AdminDeleteResponse response){
+        Admin admin = adminService.deleteAdmin(id);
+        return new ResponseEntity<>(response.deleteAdmin(admin.getId()), HttpStatus.OK);
     }
+
+
+
 }

@@ -1,10 +1,8 @@
 package com.example.service;
 
-import com.example.dto.response.AdminSuggestionResponse;
 import com.example.entity.Admin;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface AdminService {
 
@@ -16,7 +14,7 @@ public interface AdminService {
 
     List<Admin> getAdminList();
 
-    void delete(int id);
+    Admin deleteAdmin(int id);
 
 
 }

@@ -1,6 +1,5 @@
 package com.example.service.impl;
 
-import com.example.dto.response.AdminSuggestionResponse;
 import com.example.entity.Admin;
 import com.example.entity.QAdmin;
 import com.example.repository.AdminRepository;
@@ -14,13 +13,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.xml.bind.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -77,14 +73,11 @@ public class AdminServiceImpl implements AdminService {
     }
 
 
-
     @Override
-    public void delete(int id) {
-        boolean exists= adminRepository.existsById(Integer.valueOf(id));
-        if(!exists){
-            throw  new IllegalStateException("Admin with id "+id+" does not exists");
-        }
-        adminRepository.deleteById(Integer.valueOf(id));
+    public Admin deleteAdmin(int id) {
+        Admin admin = adminRepository.getById(id);
+        adminRepository.deleteById(id);
+        return admin;
     }
 
 
