@@ -56,11 +56,10 @@ public class AdminController {
     }
 
     @DeleteMapping("${app.endpoint.adminDelete}")
-    public ResponseEntity<Object> deleteAdmin(@PathVariable int id, AdminDeleteResponse response){
+    public ResponseEntity<Object> deleteAdmin(@PathVariable int id) {
         Admin admin = adminService.deleteAdmin(id);
-        return new ResponseEntity<>(response.deleteAdmin(admin.getId()), HttpStatus.OK);
+        AdminDeleteResponse adminDeleteResponse = new AdminDeleteResponse();
+        return new ResponseEntity<>(adminDeleteResponse.deleteAdmin(admin.getId()), HttpStatus.OK);
     }
-
-
 
 }
