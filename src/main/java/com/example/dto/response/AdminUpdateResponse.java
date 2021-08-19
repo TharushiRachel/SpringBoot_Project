@@ -3,7 +3,7 @@ package com.example.dto.response;
 import lombok.Data;
 
 @Data
-public class AdminSearchResponse {
+public class AdminUpdateResponse {
 
     private int id;
 
@@ -13,4 +13,5 @@ public class AdminSearchResponse {
 
     private String email;
 
+    private String password;
 }

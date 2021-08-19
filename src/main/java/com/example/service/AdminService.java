@@ -18,5 +18,5 @@ public interface AdminService {
 
     Integer deleteAdmin(int id);
 
-
+    Admin update( Admin admin) throws Exception;
 }

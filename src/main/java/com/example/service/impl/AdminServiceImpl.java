@@ -74,5 +74,24 @@ public class AdminServiceImpl implements AdminService {
         return admin.getId();
     }
 
+    @Override
+    public Admin update( Admin admin) throws Exception {
+
+        adminRepository.findById(admin.getId()).orElseThrow(() -> {
+            throw new IllegalStateException("Admin with " + admin.getId() + " does not exists");
+        });
+
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+        booleanBuilder.and(QAdmin.admin.nic.eq(admin.getNic()));
+        booleanBuilder.or(QAdmin.admin.email.eq(admin.getEmail()));
+        List<Admin> admins = (List<Admin>) adminRepository.findAll(booleanBuilder);
+
+        if (admins.size() > 1) {
+            throw new IllegalStateException("Admin already exists");
+        }
+        return adminRepository.save(admin);
+
+    }
+
 
 }

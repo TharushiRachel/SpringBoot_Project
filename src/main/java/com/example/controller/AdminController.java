@@ -1,11 +1,9 @@
 package com.example.controller;
 
 import com.example.dto.request.AdminSearchRequest;
-import com.example.dto.response.AdminCreateResponse;
+import com.example.dto.request.AdminUpdateRequest;
+import com.example.dto.response.*;
 import com.example.dto.request.AdminCreateRequest;
-import com.example.dto.response.AdminDeleteResponse;
-import com.example.dto.response.AdminSuggestionResponse;
-import com.example.dto.response.AdminViewResponse;
 import com.example.entity.Admin;
 import com.example.service.AdminService;
 import org.modelmapper.ModelMapper;
@@ -29,7 +27,7 @@ public class AdminController {
     private ModelMapper modelMapper;
 
     @PostMapping("${app.endpoint.adminCreate}")
-    public ResponseEntity<Object> addAdmin(@Validated @RequestBody AdminCreateRequest request, AdminCreateResponse response) throws Exception {
+    public ResponseEntity<Object> addAdmin(@Validated @RequestBody AdminCreateRequest request) throws Exception {
         Admin admin = modelMapper.map(request, Admin.class);
         Admin savedAdmin = adminService.save(admin);
         AdminCreateResponse adminCreateResponse = modelMapper.map(savedAdmin, AdminCreateResponse.class);
@@ -37,9 +35,10 @@ public class AdminController {
     }
 
     @GetMapping("${app.endpoint.adminSearch}")
-    public ResponseEntity<Page<Admin>> getAdmin(@Validated AdminSearchRequest adminSearchRequest){
+    public ResponseEntity<List<AdminSearchResponse>> getAdmin(@Validated AdminSearchRequest adminSearchRequest){
         Page<Admin> adminPage = adminService.search(adminSearchRequest);
-        return new ResponseEntity<>(adminPage, new HttpHeaders(), HttpStatus.OK);
+        List<AdminSearchResponse> adminSearchResponses = adminPage.stream().map(admin -> modelMapper.map(admin, AdminSearchResponse.class)).collect(Collectors.toList());
+        return new ResponseEntity<>(adminSearchResponses, new HttpHeaders(), HttpStatus.OK);
     }
 
     @GetMapping("${app.endpoint.adminView}")
@@ -64,6 +63,13 @@ public class AdminController {
         return new ResponseEntity<>(adminDeleteResponse, HttpStatus.OK);
     }
 
+    @PutMapping("${app.endpoint.adminUpdate}")
+    public ResponseEntity<AdminUpdateResponse> updateAdmin(@PathVariable int id, @Validated @RequestBody AdminUpdateRequest request) throws Exception{
+        Admin admin = modelMapper.map(request, Admin.class);
+        Admin updateAdmin = adminService.update(admin);
+        AdminUpdateResponse adminUpdateResponse = modelMapper.map(updateAdmin, AdminUpdateResponse.class);
+        adminUpdateResponse.setId(id);
+        return new ResponseEntity<>(adminUpdateResponse, HttpStatus.OK);
     }
 
 }
