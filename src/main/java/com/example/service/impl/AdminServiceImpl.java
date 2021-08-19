@@ -15,8 +15,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.xml.bind.ValidationException;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -48,7 +46,7 @@ public class AdminServiceImpl implements AdminService {
     @Transactional(readOnly = true)
     @Override
     public Page<Admin> search(AdminSearchRequest request) {
-        Pageable paging = PageRequest.of(request.getPageNo()+1, request.getPageSize(), Sort.by(request.getSortProperty()));
+        Pageable paging = PageRequest.of(request.getPageNo() + 1, request.getPageSize(), Sort.by(request.getSortProperty()));
         return adminRepository.findAll(paging);
     }
 
@@ -56,9 +54,9 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Admin findAdminById(int id) {
 
-         return adminRepository.findById(id).orElseThrow(()->{
-             throw  new IllegalStateException("Admin with "+id+" does not exists");
-         });
+        return adminRepository.findById(id).orElseThrow(() -> {
+            throw new IllegalStateException("Admin with " + id + " does not exists");
+        });
     }
 
     @Override
@@ -68,10 +66,12 @@ public class AdminServiceImpl implements AdminService {
 
 
     @Override
-    public Admin deleteAdmin(int id) {
-        Admin admin = adminRepository.getById(id);
-        adminRepository.deleteById(id);
-        return admin;
+    public Integer deleteAdmin(int id) {
+        Admin admin = adminRepository.findById(id).orElseThrow(() -> {
+            throw new IllegalStateException("Admin with " + id + " does not exists");
+        });
+        adminRepository.delete(admin);
+        return admin.getId();
     }
 
 

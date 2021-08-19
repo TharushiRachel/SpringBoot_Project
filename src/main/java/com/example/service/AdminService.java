@@ -16,7 +16,7 @@ public interface AdminService {
 
     List<Admin> getAdminList();
 
-    Admin deleteAdmin(int id);
+    Integer deleteAdmin(int id);
 
 
 }
