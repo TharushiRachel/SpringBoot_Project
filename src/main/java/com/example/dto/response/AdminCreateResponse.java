@@ -1,13 +1,10 @@
 package com.example.dto.response;
 
-import com.example.entity.Admin;
+import lombok.Data;
 
+@Data
 public class AdminCreateResponse {
 
-    public Admin fetchAdmin(int id){
-        Admin response = new Admin();
-        response.setId(id);
-        return response;
-    }
+    private int id;
 
 }

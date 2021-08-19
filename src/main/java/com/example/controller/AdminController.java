@@ -1,7 +1,8 @@
 package com.example.controller;
 
+import com.example.dto.request.AdminSearchRequest;
 import com.example.dto.response.AdminCreateResponse;
-import com.example.dto.request.AdminRequest;
+import com.example.dto.request.AdminCreateRequest;
 import com.example.dto.response.AdminDeleteResponse;
 import com.example.dto.response.AdminSuggestionResponse;
 import com.example.dto.response.AdminViewResponse;
@@ -9,13 +10,13 @@ import com.example.entity.Admin;
 import com.example.service.AdminService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -28,18 +29,17 @@ public class AdminController {
     private ModelMapper modelMapper;
 
     @PostMapping("${app.endpoint.adminCreate}")
-    public ResponseEntity<Object> addAdmin(@Validated @RequestBody AdminRequest request, AdminCreateResponse response) throws Exception {
+    public ResponseEntity<Object> addAdmin(@Validated @RequestBody AdminCreateRequest request, AdminCreateResponse response) throws Exception {
         Admin admin = modelMapper.map(request, Admin.class);
-        adminService.save(admin);
-        return new ResponseEntity<>(response.fetchAdmin(admin.getId()), HttpStatus.OK);
+        Admin savedAdmin = adminService.save(admin);
+        AdminCreateResponse adminCreateResponse = modelMapper.map(savedAdmin, AdminCreateResponse.class);
+        return new ResponseEntity<>(adminCreateResponse, HttpStatus.CREATED);
     }
 
     @GetMapping("${app.endpoint.adminSearch}")
-    public ResponseEntity<List<Admin>> getAdmin( @RequestParam(defaultValue = "0") Integer pageNo,
-                                                 @RequestParam(defaultValue = "10") Integer pageSize,
-                                                 @RequestParam(defaultValue = "email") String email){
-       List<Admin> list = adminService.get(pageNo,pageSize,email);
-        return new ResponseEntity<>(list, new HttpHeaders(), HttpStatus.OK);
+    public ResponseEntity<Page<Admin>> getAdmin(@Validated AdminSearchRequest adminSearchRequest){
+        Page<Admin> adminPage = adminService.search(adminSearchRequest);
+        return new ResponseEntity<>(adminPage, new HttpHeaders(), HttpStatus.OK);
     }
 
     @GetMapping("${app.endpoint.adminView}")
@@ -50,14 +50,17 @@ public class AdminController {
     }
 
     @GetMapping("${app.endpoint.adminSuggestion}")
-    public List<AdminSuggestionResponse> getAdminList(){
+    public ResponseEntity<List<AdminSuggestionResponse>> getAdminList(){
         List<Admin> adminList = adminService.getAdminList();
-       return adminList.stream().map(admin -> modelMapper.map(admin, AdminSuggestionResponse.class)).collect(Collectors.toList());
+        List<AdminSuggestionResponse> adminSuggestionResponses = adminList.stream().map(admin -> modelMapper.map(admin, AdminSuggestionResponse.class)).collect(Collectors.toList());
+        return new ResponseEntity<>(adminSuggestionResponses, HttpStatus.OK);
     }
 
     @DeleteMapping("${app.endpoint.adminDelete}")
-    public ResponseEntity<Object> deleteAdmin(@PathVariable int id, AdminDeleteResponse response){
+    public ResponseEntity<Object> deleteAdmin(@PathVariable int id){
         Admin admin = adminService.deleteAdmin(id);
+        AdminDeleteResponse adminDeleteResponse =  new AdminDeleteResponse();
+        adminDeleteResponse.
         return new ResponseEntity<>(response.deleteAdmin(admin.getId()), HttpStatus.OK);
     }
 

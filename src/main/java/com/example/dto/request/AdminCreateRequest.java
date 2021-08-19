@@ -5,7 +5,7 @@ import lombok.NonNull;
 import javax.validation.constraints.*;
 
 @Data
-public class AdminRequest {
+public class AdminCreateRequest {
 
     @NotNull
     @Pattern(regexp = "^([0-9]{9}[x|X|v|V]|[0-9]{12})$",message = "Invalid NIC")

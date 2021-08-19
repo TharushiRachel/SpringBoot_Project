@@ -1,5 +1,6 @@
 package com.example.service.impl;
 
+import com.example.dto.request.AdminSearchRequest;
 import com.example.entity.Admin;
 import com.example.entity.QAdmin;
 import com.example.repository.AdminRepository;
@@ -31,7 +32,7 @@ public class AdminServiceImpl implements AdminService {
 
 
     @Override
-    public Admin save(Admin admin) throws Exception {
+    public Admin save(Admin admin) {
 
         BooleanBuilder booleanBuilder = new BooleanBuilder();
         booleanBuilder.and(QAdmin.admin.nic.eq(admin.getNic()));
@@ -39,23 +40,16 @@ public class AdminServiceImpl implements AdminService {
         List<Admin> admins = (List<Admin>) adminRepository.findAll(booleanBuilder);
 
         if (admins.size() > 0) {
-            throw new ValidationException("Admin already exists");
+            throw new IllegalStateException("Admin already exists");
         }
         return adminRepository.save(admin);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<Admin> get(int pageNo, int pageSize, String email) {
-        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(email));
-        Page<Admin> adminPage = adminRepository.findAll(paging);
-
-        if(adminPage.hasContent()){
-            return adminPage.getContent();
-        }
-        else {
-            return new ArrayList<Admin>();
-        }
+    public Page<Admin> search(AdminSearchRequest request) {
+        Pageable paging = PageRequest.of(request.getPageNo()+1, request.getPageSize(), Sort.by(request.getSortProperty()));
+        return adminRepository.findAll(paging);
     }
 
     @Transactional(readOnly = true)

@@ -1,6 +1,8 @@
 package com.example.service;
 
+import com.example.dto.request.AdminSearchRequest;
 import com.example.entity.Admin;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -8,7 +10,7 @@ public interface AdminService {
 
     Admin save(Admin admin) throws Exception;
 
-    List<Admin> get(int pageNo, int pageSize, String email);
+    Page<Admin> search(AdminSearchRequest request);
 
     Admin findAdminById(int id);
 
