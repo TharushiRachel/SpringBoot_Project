@@ -66,9 +66,9 @@ public class AdminController {
     @PutMapping("${app.endpoint.adminUpdate}")
     public ResponseEntity<AdminUpdateResponse> updateAdmin(@PathVariable int id, @Validated @RequestBody AdminUpdateRequest request) throws Exception{
         Admin admin = modelMapper.map(request, Admin.class);
+        admin.setId(id);
         Admin updateAdmin = adminService.update(admin);
         AdminUpdateResponse adminUpdateResponse = modelMapper.map(updateAdmin, AdminUpdateResponse.class);
-        adminUpdateResponse.setId(id);
         return new ResponseEntity<>(adminUpdateResponse, HttpStatus.OK);
     }
 

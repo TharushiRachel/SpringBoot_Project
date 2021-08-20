@@ -55,7 +55,7 @@ public class AdminServiceImpl implements AdminService {
     public Admin findAdminById(int id) {
 
         return adminRepository.findById(id).orElseThrow(() -> {
-            throw new IllegalStateException("Admin with " + id + " does not exists");
+            throw new ApiRequestException("Admin with " + id + " does not exists");
         });
     }
 
@@ -67,8 +67,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Integer deleteAdmin(int id) {
+
         Admin admin = adminRepository.findById(id).orElseThrow(() -> {
-            throw new IllegalStateException("Admin with " + id + " does not exists");
+            throw new ApiRequestException("Admin with " + id + " does not exists");
         });
         adminRepository.delete(admin);
         return admin.getId();
@@ -77,8 +78,8 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Admin update( Admin admin) throws Exception {
 
-        adminRepository.findById(admin.getId()).orElseThrow(() -> {
-            throw new IllegalStateException("Admin with " + admin.getId() + " does not exists");
+        Admin adminDb = adminRepository.findById(admin.getId()).orElseThrow(() -> {
+            throw new ApiRequestException("Admin with " + admin.getId() + " does not exists");
         });
 
         BooleanBuilder booleanBuilder = new BooleanBuilder();
@@ -87,9 +88,15 @@ public class AdminServiceImpl implements AdminService {
         List<Admin> admins = (List<Admin>) adminRepository.findAll(booleanBuilder);
 
         if (admins.size() > 1) {
-            throw new IllegalStateException("Admin already exists");
+            throw new ApiRequestException("Admin already exists");
         }
-        return adminRepository.save(admin);
+
+        adminDb.setEmail(admin.getEmail());
+        adminDb.setNic(admin.getNic());
+        adminDb.setFullName(admin.getFullName());
+        adminDb.setPassword(admin.getPassword());
+
+        return adminRepository.save(adminDb);
 
     }
 
