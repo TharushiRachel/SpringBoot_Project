@@ -3,6 +3,7 @@ package com.example.service.impl;
 import com.example.dto.request.AdminSearchRequest;
 import com.example.entity.Admin;
 import com.example.entity.QAdmin;
+import com.example.exception.ApiRequestException;
 import com.example.repository.AdminRepository;
 import com.example.service.AdminService;
 import com.querydsl.core.BooleanBuilder;
@@ -31,14 +32,13 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Admin save(Admin admin) {
-
         BooleanBuilder booleanBuilder = new BooleanBuilder();
         booleanBuilder.and(QAdmin.admin.nic.eq(admin.getNic()));
         booleanBuilder.or(QAdmin.admin.email.eq(admin.getEmail()));
         List<Admin> admins = (List<Admin>) adminRepository.findAll(booleanBuilder);
 
         if (admins.size() > 0) {
-            throw new IllegalStateException("Admin already exists");
+            throw new ApiRequestException("Admin Already Exists");
         }
         return adminRepository.save(admin);
     }
