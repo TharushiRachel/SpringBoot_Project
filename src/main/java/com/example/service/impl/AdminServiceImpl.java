@@ -3,11 +3,13 @@ package com.example.service.impl;
 import com.example.dto.request.AdminSearchRequest;
 import com.example.entity.Admin;
 import com.example.entity.QAdmin;
+import com.example.enum_.Status;
 import com.example.exception.ApiRequestException;
 import com.example.repository.AdminRepository;
 import com.example.service.AdminService;
 import com.querydsl.core.BooleanBuilder;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,6 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -40,7 +43,9 @@ public class AdminServiceImpl implements AdminService {
         if (admins.size() > 0) {
             throw new ApiRequestException("Admin Already Exists");
         }
+
         return adminRepository.save(admin);
+
     }
 
     @Transactional(readOnly = true)
@@ -71,7 +76,8 @@ public class AdminServiceImpl implements AdminService {
         Admin admin = adminRepository.findById(id).orElseThrow(() -> {
             throw new ApiRequestException("Admin with " + id + " does not exists");
         });
-        adminRepository.delete(admin);
+//        adminRepository.delete(admin);
+        admin.setStatus(Status.DELETE);
         return admin.getId();
     }
 

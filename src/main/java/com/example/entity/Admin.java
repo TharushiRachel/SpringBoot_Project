@@ -1,11 +1,12 @@
 package com.example.entity;
 
+import com.example.enum_.Status;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
@@ -17,6 +18,7 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 @Entity
 @Table(name="admin")
 @EntityListeners(AuditingEntityListener.class)
+@Where(clause = "status = 'ACTIVE'")
 public class Admin {
 
     @Id
@@ -30,6 +32,9 @@ public class Admin {
     private String email;
 
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     @OneToMany(mappedBy = "admin", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<Customer> customers;
@@ -47,5 +52,6 @@ public class Admin {
     @LastModifiedDate
     @Temporal(TIMESTAMP)
     protected Date lastModifiedDate;
+
 
 }

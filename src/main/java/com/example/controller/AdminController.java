@@ -5,6 +5,7 @@ import com.example.dto.request.AdminUpdateRequest;
 import com.example.dto.response.*;
 import com.example.dto.request.AdminCreateRequest;
 import com.example.entity.Admin;
+import com.example.enum_.Status;
 import com.example.service.AdminService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ public class AdminController {
     @PostMapping("${app.endpoint.adminCreate}")
     public ResponseEntity<Object> addAdmin(@Validated @RequestBody AdminCreateRequest request) throws Exception {
         Admin admin = modelMapper.map(request, Admin.class);
+        admin.setStatus(Status.valueOf("ACTIVE"));
         Admin savedAdmin = adminService.save(admin);
         AdminCreateResponse adminCreateResponse = modelMapper.map(savedAdmin, AdminCreateResponse.class);
         return new ResponseEntity<>(adminCreateResponse, HttpStatus.CREATED);
@@ -49,7 +51,7 @@ public class AdminController {
     }
 
     @GetMapping("${app.endpoint.adminSuggestion}")
-    public ResponseEntity<List<AdminSuggestionResponse>> getAdminList(){
+    public ResponseEntity<List<AdminSuggestionResponse>> getAdminList(Status status){
         List<Admin> adminList = adminService.getAdminList();
         List<AdminSuggestionResponse> adminSuggestionResponses = adminList.stream().map(admin -> modelMapper.map(admin, AdminSuggestionResponse.class)).collect(Collectors.toList());
         return new ResponseEntity<>(adminSuggestionResponses, HttpStatus.OK);
@@ -67,6 +69,7 @@ public class AdminController {
     public ResponseEntity<AdminUpdateResponse> updateAdmin(@PathVariable int id, @Validated @RequestBody AdminUpdateRequest request) throws Exception{
         Admin admin = modelMapper.map(request, Admin.class);
         admin.setId(id);
+        admin.setStatus(Status.valueOf("ACTIVE"));
         Admin updateAdmin = adminService.update(admin);
         AdminUpdateResponse adminUpdateResponse = modelMapper.map(updateAdmin, AdminUpdateResponse.class);
         return new ResponseEntity<>(adminUpdateResponse, HttpStatus.OK);
