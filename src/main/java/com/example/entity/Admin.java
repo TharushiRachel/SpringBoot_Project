@@ -1,6 +1,6 @@
 package com.example.entity;
 
-import com.example.enum_.Status;
+import com.example.enums.Status;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Where;
@@ -33,7 +33,7 @@ public class Admin {
 
     private String password;
 
-    @Enumerated(EnumType.STRING)
+    @Where(clause = "status != 'D'")
     private Status status;
 
     @OneToMany(mappedBy = "admin", cascade = {CascadeType.PERSIST, CascadeType.MERGE})

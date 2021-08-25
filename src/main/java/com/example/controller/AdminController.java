@@ -5,7 +5,7 @@ import com.example.dto.request.AdminUpdateRequest;
 import com.example.dto.response.*;
 import com.example.dto.request.AdminCreateRequest;
 import com.example.entity.Admin;
-import com.example.enum_.Status;
+import com.example.enums.Status;
 import com.example.service.AdminService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
