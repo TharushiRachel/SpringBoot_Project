@@ -100,4 +100,11 @@ create table work
     constraint fk2_work foreign key (dept_id) references department (id)
 );
 
+ALTER TABLE admin
+ADD created_date date,
+ADD last_modified_date date;
+
+ALTER TABLE admin
+ADD status varchar(10)
+
 
