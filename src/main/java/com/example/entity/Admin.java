@@ -18,7 +18,7 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 @Entity
 @Table(name="admin")
 @EntityListeners(AuditingEntityListener.class)
-@Where(clause = "status = 'ACTIVE'")
+@Where(clause = "status != 'D'")
 public class Admin {
 
     @Id
