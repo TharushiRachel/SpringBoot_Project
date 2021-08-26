@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +31,10 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
+
 
     @Override
     public Admin save(Admin admin) {
@@ -41,6 +46,11 @@ public class AdminServiceImpl implements AdminService {
         if (admins.size() > 0) {
             throw new ApiRequestException("Admin Already Exists");
         }
+
+        admin.setStatus(Status.valueOf("ACTIVE"));
+        String password = admin.getPassword();
+        String encryptedPwd = passwordEncoder.encode(password);
+        admin.setPassword(encryptedPwd);
 
         return adminRepository.save(admin);
     }
@@ -74,7 +84,7 @@ public class AdminServiceImpl implements AdminService {
         Admin admin = adminRepository.findById(id).orElseThrow(() -> {
             throw new ApiRequestException("Admin with " + id + " does not exists");
         });
-//        adminRepository.delete(admin);
+
         admin.setStatus(Status.DELETED);
         return admin.getId();
     }
@@ -94,6 +104,8 @@ public class AdminServiceImpl implements AdminService {
         if (admins.size() > 1) {
             throw new ApiRequestException("Admin already exists");
         }
+
+        admin.setStatus(Status.valueOf("ACTIVE"));
 
         adminDb.setEmail(admin.getEmail());
         adminDb.setNic(admin.getNic());

@@ -30,16 +30,9 @@ public class AdminController {
     @Autowired
     private ModelMapper modelMapper;
 
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
-
     @PostMapping("${app.endpoint.adminCreate}")
     public ResponseEntity<Object> saveAdmin(@Validated @RequestBody AdminCreateRequest request) throws Exception {
         Admin admin = modelMapper.map(request, Admin.class);
-        admin.setStatus(Status.valueOf("ACTIVE"));
-        String password = admin.getPassword();
-        String encryptedPwd = passwordEncoder.encode(password);
-        admin.setPassword(encryptedPwd);
         Admin savedAdmin = adminService.save(admin);
         AdminCreateResponse adminCreateResponse = modelMapper.map(savedAdmin, AdminCreateResponse.class);
         return new ResponseEntity<>(adminCreateResponse, HttpStatus.CREATED);
@@ -48,14 +41,14 @@ public class AdminController {
 
 
     @GetMapping("${app.endpoint.adminSearch}")
-    public ResponseEntity<List<AdminSearchResponse>> getAdmin(@Validated AdminSearchRequest adminSearchRequest){
+    public ResponseEntity<List<AdminSearchResponse>> search(@Validated AdminSearchRequest adminSearchRequest){
         Page<Admin> adminPage = adminService.search(adminSearchRequest);
         List<AdminSearchResponse> adminSearchResponses = adminPage.stream().map(admin -> modelMapper.map(admin, AdminSearchResponse.class)).collect(Collectors.toList());
         return new ResponseEntity<>(adminSearchResponses, new HttpHeaders(), HttpStatus.OK);
     }
 
     @GetMapping("${app.endpoint.adminView}")
-    public ResponseEntity<AdminViewResponse> getAdminById(@PathVariable int id) {
+    public ResponseEntity<AdminViewResponse> viewAdmin(@PathVariable int id) {
         Admin admin = adminService.findAdminById((id));
         AdminViewResponse adminViewResponse = modelMapper.map(admin, AdminViewResponse.class);
         return new ResponseEntity<>(adminViewResponse, HttpStatus.OK);
@@ -80,7 +73,6 @@ public class AdminController {
     public ResponseEntity<AdminUpdateResponse> updateAdmin(@PathVariable int id, @Validated @RequestBody AdminUpdateRequest request) throws Exception{
         Admin admin = modelMapper.map(request, Admin.class);
         admin.setId(id);
-        admin.setStatus(Status.valueOf("ACTIVE"));
         Admin updateAdmin = adminService.update(admin);
         AdminUpdateResponse adminUpdateResponse = modelMapper.map(updateAdmin, AdminUpdateResponse.class);
         return new ResponseEntity<>(adminUpdateResponse, HttpStatus.OK);
