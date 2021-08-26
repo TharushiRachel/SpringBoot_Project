@@ -43,8 +43,8 @@ public class AdminServiceImpl implements AdminService {
         }
 
         return adminRepository.save(admin);
-
     }
+
 
     @Transactional(readOnly = true)
     @Override

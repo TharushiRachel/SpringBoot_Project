@@ -3,7 +3,6 @@ package com.example.service;
 import com.example.dto.request.AdminSearchRequest;
 import com.example.entity.Admin;
 import org.springframework.data.domain.Page;
-
 import java.util.List;
 
 public interface AdminService {

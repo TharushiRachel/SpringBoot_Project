@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import com.example.config.SecurityConfig;
 import com.example.dto.request.AdminSearchRequest;
 import com.example.dto.request.AdminUpdateRequest;
 import com.example.dto.response.*;
@@ -13,6 +14,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -27,14 +30,22 @@ public class AdminController {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
     @PostMapping("${app.endpoint.adminCreate}")
-    public ResponseEntity<Object> addAdmin(@Validated @RequestBody AdminCreateRequest request) throws Exception {
+    public ResponseEntity<Object> saveAdmin(@Validated @RequestBody AdminCreateRequest request) throws Exception {
         Admin admin = modelMapper.map(request, Admin.class);
         admin.setStatus(Status.valueOf("ACTIVE"));
+        String password = admin.getPassword();
+        String encryptedPwd = passwordEncoder.encode(password);
+        admin.setPassword(encryptedPwd);
         Admin savedAdmin = adminService.save(admin);
         AdminCreateResponse adminCreateResponse = modelMapper.map(savedAdmin, AdminCreateResponse.class);
         return new ResponseEntity<>(adminCreateResponse, HttpStatus.CREATED);
     }
+
+
 
     @GetMapping("${app.endpoint.adminSearch}")
     public ResponseEntity<List<AdminSearchResponse>> getAdmin(@Validated AdminSearchRequest adminSearchRequest){
@@ -44,14 +55,14 @@ public class AdminController {
     }
 
     @GetMapping("${app.endpoint.adminView}")
-    public ResponseEntity<AdminViewResponse> getById(@PathVariable int id) {
+    public ResponseEntity<AdminViewResponse> getAdminById(@PathVariable int id) {
         Admin admin = adminService.findAdminById((id));
         AdminViewResponse adminViewResponse = modelMapper.map(admin, AdminViewResponse.class);
         return new ResponseEntity<>(adminViewResponse, HttpStatus.OK);
     }
 
     @GetMapping("${app.endpoint.adminSuggestion}")
-    public ResponseEntity<List<AdminSuggestionResponse>> getAdminList(Status status){
+    public ResponseEntity<List<AdminSuggestionResponse>> listAdmin(Status status){
         List<Admin> adminList = adminService.getAdminList();
         List<AdminSuggestionResponse> adminSuggestionResponses = adminList.stream().map(admin -> modelMapper.map(admin, AdminSuggestionResponse.class)).collect(Collectors.toList());
         return new ResponseEntity<>(adminSuggestionResponses, HttpStatus.OK);
