@@ -36,7 +36,7 @@ public class Admin {
     @Where(clause = "status != 'D'")
     private Status status;
 
-    @OneToMany(mappedBy = "admin", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "admin", targetEntity = Customer.class, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<Customer> customers;
 
     @OneToMany(mappedBy = "admin", cascade = {CascadeType.PERSIST, CascadeType.MERGE})

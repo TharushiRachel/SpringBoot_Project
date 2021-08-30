@@ -2,7 +2,6 @@ package com.example.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-
 import javax.persistence.*;
 import java.util.Set;
 
@@ -34,8 +33,8 @@ public class Customer {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "customer")
     private Hall hall;
 
-    @ManyToOne
-    @JoinColumn(name = "admin_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Admin.class)
+    @JoinColumn(name = "admin_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Admin admin;
 
     @OneToMany(mappedBy = "customer", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
