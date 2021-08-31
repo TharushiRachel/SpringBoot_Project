@@ -1,13 +1,12 @@
 package com.example.dto.request;
 
-
 import lombok.Data;
 
 import javax.validation.constraints.*;
 import java.util.Date;
 
 @Data
-public class CustomerCreateRequest {
+public class CustomerUpdateRequest {
 
     @NotNull
     @Pattern(regexp = "^([0-9]{9}[x|X|v|V]|[0-9]{12})$",message = "Invalid NIC")
@@ -35,10 +34,4 @@ public class CustomerCreateRequest {
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$")
     private String password;
 
-    private Admin admin;
-
-    @Data
-    private static class Admin{
-        private int id;
-    }
 }
