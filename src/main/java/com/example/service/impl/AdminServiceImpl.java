@@ -73,6 +73,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Admin> getAdminList() {
         return adminRepository.findAll();
     }
