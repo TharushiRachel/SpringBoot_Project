@@ -32,4 +32,10 @@ public class Employee implements Serializable {
     @OneToMany(mappedBy = "employee", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<EmployeeLeave> employeeLeaves;
 
+    @ManyToMany
+    @JoinTable(name = "employee_departmens",
+            joinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "department_id", referencedColumnName = "id"))
+    private Set<Department> departments;
+
 }

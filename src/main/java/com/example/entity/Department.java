@@ -11,17 +11,14 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "department")
-public class Department implements Serializable {
+public class Department {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String name;
 
-    @ManyToMany
-    @JoinTable(name = "work",
-            joinColumns = @JoinColumn(name = "department_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"))
-    private Set<Employee> employees;
+    @ManyToMany(mappedBy = "departments")
+    Set<Employee> employees;
 
 }

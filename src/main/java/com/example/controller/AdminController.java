@@ -1,6 +1,5 @@
 package com.example.controller;
 
-import com.example.config.SecurityConfig;
 import com.example.dto.request.AdminSearchRequest;
 import com.example.dto.request.AdminUpdateRequest;
 import com.example.dto.response.*;
@@ -14,8 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;

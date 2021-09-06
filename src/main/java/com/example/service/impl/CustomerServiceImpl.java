@@ -3,7 +3,6 @@ package com.example.service.impl;
 import com.example.dto.request.CustomerSearchRequest;
 import com.example.entity.Admin;
 import com.example.entity.Customer;
-import com.example.entity.QAdmin;
 import com.example.entity.QCustomer;
 import com.example.enums.Status;
 import com.example.exception.ApiRequestException;
