@@ -35,7 +35,6 @@ public class AdminServiceImpl implements AdminService {
     private BCryptPasswordEncoder passwordEncoder;
 
 
-
     @Override
     public Admin save(Admin admin) {
         BooleanBuilder booleanBuilder = new BooleanBuilder();
@@ -47,7 +46,8 @@ public class AdminServiceImpl implements AdminService {
             throw new ApiRequestException("Admin Already Exists");
         }
 
-        admin.setStatus(Status.valueOf("ACTIVE"));
+        admin.setStatus(Status.ACTIVE);
+
         String password = admin.getPassword();
         String encryptedPwd = passwordEncoder.encode(password);
         admin.setPassword(encryptedPwd);
@@ -91,7 +91,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Admin update( Admin admin) throws Exception {
+    public Admin update(Admin admin) throws Exception {
 
         Admin adminDb = adminRepository.findById(admin.getId()).orElseThrow(() -> {
             throw new ApiRequestException("Admin with " + admin.getId() + " does not exists");

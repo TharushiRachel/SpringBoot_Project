@@ -2,7 +2,9 @@ package com.example.enums;
 
 public enum Status {
 
-    ACTIVE("Active", "A"), INACTIVE("Inactive", "I"), DELETED("Deleted", "D");
+    ACTIVE("Active", "A"),
+    INACTIVE("Inactive", "I"),
+    DELETED("Deleted", "D");
 
     private String label;
     private String value;
@@ -28,6 +30,5 @@ public enum Status {
         }
         return null;
     }
-
 
 }
