@@ -19,6 +19,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 
@@ -74,9 +75,9 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional(readOnly = true)
     public Customer findCustomerById(int id) {
 
-        return customerRepository.findById(id).orElseThrow(()->{
+        return customerRepository.findById(id).orElseThrow(() -> {
             throw new ApiRequestException("Customer with " + id + " does not exists");
-        }) ;
+        });
     }
 
     @Override

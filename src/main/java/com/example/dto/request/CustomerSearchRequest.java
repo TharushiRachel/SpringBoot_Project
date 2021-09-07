@@ -6,6 +6,8 @@ import lombok.Data;
 public class CustomerSearchRequest {
 
     private Integer pageNo;
+
     private Integer pageSize;
+
     private String sortProperty;
 }

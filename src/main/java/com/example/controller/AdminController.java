@@ -1,9 +1,9 @@
 package com.example.controller;
 
+import com.example.dto.request.AdminCreateRequest;
 import com.example.dto.request.AdminSearchRequest;
 import com.example.dto.request.AdminUpdateRequest;
 import com.example.dto.response.*;
-import com.example.dto.request.AdminCreateRequest;
 import com.example.entity.Admin;
 import com.example.enums.Status;
 import com.example.service.AdminService;
@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,9 +37,8 @@ public class AdminController {
     }
 
 
-
     @GetMapping("${app.endpoint.adminSearch}")
-    public ResponseEntity<List<AdminSearchResponse>> search(@Validated AdminSearchRequest adminSearchRequest){
+    public ResponseEntity<List<AdminSearchResponse>> search(@Validated AdminSearchRequest adminSearchRequest) {
         Page<Admin> adminPage = adminService.search(adminSearchRequest);
         List<AdminSearchResponse> adminSearchResponses = adminPage.stream().map(admin -> modelMapper.map(admin, AdminSearchResponse.class)).collect(Collectors.toList());
         return new ResponseEntity<>(adminSearchResponses, new HttpHeaders(), HttpStatus.OK);
@@ -52,22 +52,22 @@ public class AdminController {
     }
 
     @GetMapping("${app.endpoint.adminSuggestion}")
-    public ResponseEntity<List<AdminSuggestionResponse>> listAdmin(Status status){
+    public ResponseEntity<List<AdminSuggestionResponse>> listAdmin(Status status) {
         List<Admin> adminList = adminService.getAdminList();
         List<AdminSuggestionResponse> adminSuggestionResponses = adminList.stream().map(admin -> modelMapper.map(admin, AdminSuggestionResponse.class)).collect(Collectors.toList());
         return new ResponseEntity<>(adminSuggestionResponses, HttpStatus.OK);
     }
 
     @DeleteMapping("${app.endpoint.adminDelete}")
-    public ResponseEntity<AdminDeleteResponse> deleteAdmin(@PathVariable int id){
+    public ResponseEntity<AdminDeleteResponse> deleteAdmin(@PathVariable int id) {
         Integer deletedAdminId = adminService.deleteAdmin(id);
-        AdminDeleteResponse adminDeleteResponse =  new AdminDeleteResponse();
+        AdminDeleteResponse adminDeleteResponse = new AdminDeleteResponse();
         adminDeleteResponse.setId(deletedAdminId);
         return new ResponseEntity<>(adminDeleteResponse, HttpStatus.OK);
     }
 
     @PutMapping("${app.endpoint.adminUpdate}")
-    public ResponseEntity<AdminUpdateResponse> updateAdmin(@PathVariable int id, @Validated @RequestBody AdminUpdateRequest request) throws Exception{
+    public ResponseEntity<AdminUpdateResponse> updateAdmin(@PathVariable int id, @Validated @RequestBody AdminUpdateRequest request) throws Exception {
         Admin admin = modelMapper.map(request, Admin.class);
         admin.setId(id);
         Admin updateAdmin = adminService.update(admin);

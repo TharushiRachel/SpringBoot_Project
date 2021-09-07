@@ -7,6 +7,7 @@ import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
@@ -16,7 +17,7 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 @Getter
 @Setter
 @Entity
-@Table(name="admin")
+@Table(name = "admin")
 @EntityListeners(AuditingEntityListener.class)
 @Where(clause = "status != 'D'")
 public class Admin {

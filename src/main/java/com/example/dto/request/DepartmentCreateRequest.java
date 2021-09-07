@@ -9,6 +9,6 @@ import javax.validation.constraints.Size;
 public class DepartmentCreateRequest {
 
     @NotNull
-    @Size(min = 2, max = 50 , message = "The name should have atleast 2 characters")
+    @Size(min = 2, max = 50, message = "The name should have atleast 2 characters")
     private String name;
 }

@@ -1,6 +1,7 @@
 package com.example.service;
 
 import com.example.entity.Department;
+
 import java.util.List;
 
 public interface DepartmentService {

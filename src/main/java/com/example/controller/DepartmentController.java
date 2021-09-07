@@ -1,7 +1,6 @@
 package com.example.controller;
 
 import com.example.dto.request.DepartmentCreateRequest;
-import com.example.dto.response.AdminSuggestionResponse;
 import com.example.dto.response.DepartmentCreateResponse;
 import com.example.dto.response.DepartmentSuggestionResponse;
 import com.example.entity.Department;
@@ -29,7 +28,7 @@ public class DepartmentController {
     private ModelMapper modelMapper;
 
     @PostMapping("${app.endpoint.departmentCreate}")
-    public ResponseEntity<Object> saveDepartment(@Validated @RequestBody DepartmentCreateRequest request) throws Exception{
+    public ResponseEntity<Object> saveDepartment(@Validated @RequestBody DepartmentCreateRequest request) throws Exception {
         Department department = modelMapper.map(request, Department.class);
         Department saveDepartment = departmentService.save(department);
         DepartmentCreateResponse departmentCreateResponse = modelMapper.map(saveDepartment, DepartmentCreateResponse.class);
@@ -37,7 +36,7 @@ public class DepartmentController {
     }
 
     @GetMapping("${app.endpoint.departmentSuggestion}")
-    public ResponseEntity<List<DepartmentSuggestionResponse>> listDepartments(){
+    public ResponseEntity<List<DepartmentSuggestionResponse>> listDepartments() {
         List<Department> departmentList = departmentService.getDepartmentList();
         List<DepartmentSuggestionResponse> departmentSuggestionResponses = departmentList.stream().map(department -> modelMapper.map(department, DepartmentSuggestionResponse.class)).collect(Collectors.toList());
         return new ResponseEntity<>(departmentSuggestionResponses, HttpStatus.OK);

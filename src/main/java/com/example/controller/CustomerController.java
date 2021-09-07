@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,7 +29,7 @@ public class CustomerController {
     private ModelMapper modelMapper;
 
     @PostMapping("${app.endpoint.customerCreate}")
-    public ResponseEntity<Object> saveCustomer(@Validated @RequestBody CustomerCreateRequest request) throws Exception{
+    public ResponseEntity<Object> saveCustomer(@Validated @RequestBody CustomerCreateRequest request) throws Exception {
         Customer customer = modelMapper.map(request, Customer.class);
         Customer saveCustomer = customerService.save(customer);
         CustomerCreateResponse customerCreateResponse = modelMapper.map(saveCustomer, CustomerCreateResponse.class);
@@ -36,7 +37,7 @@ public class CustomerController {
     }
 
     @GetMapping("${app.endpoint.customerSuggestion}")
-    public ResponseEntity<List<CustomerSuggestionResponse>> listCustomer(Status status){
+    public ResponseEntity<List<CustomerSuggestionResponse>> listCustomer(Status status) {
         List<Customer> customerList = customerService.getCustomerList();
         List<CustomerSuggestionResponse> customerSuggestionResponses = customerList.stream().map(customer -> modelMapper.map(customer, CustomerSuggestionResponse.class)).collect(Collectors.toList());
         return new ResponseEntity<>(customerSuggestionResponses, HttpStatus.OK);
@@ -44,7 +45,7 @@ public class CustomerController {
 
 
     @GetMapping("${app.endpoint.customerView}")
-    public ResponseEntity<CustomerViewResponse> viewCustomer(@PathVariable int id){
+    public ResponseEntity<CustomerViewResponse> viewCustomer(@PathVariable int id) {
         Customer customer = customerService.findCustomerById(id);
         CustomerViewResponse customerViewResponse = modelMapper.map(customer, CustomerViewResponse.class);
         return new ResponseEntity<>(customerViewResponse, HttpStatus.OK);
@@ -52,14 +53,14 @@ public class CustomerController {
 
 
     @GetMapping("${app.endpoint.customerSearch}")
-    public ResponseEntity<List<CustomerSearchResponse>> search(@Validated CustomerSearchRequest customerSearchRequest){
+    public ResponseEntity<List<CustomerSearchResponse>> search(@Validated CustomerSearchRequest customerSearchRequest) {
         Page<Customer> customerPage = customerService.search(customerSearchRequest);
         List<CustomerSearchResponse> customerSearchResponses = customerPage.stream().map(customer -> modelMapper.map(customer, CustomerSearchResponse.class)).collect(Collectors.toList());
         return new ResponseEntity<>(customerSearchResponses, new HttpHeaders(), HttpStatus.OK);
     }
 
     @DeleteMapping("${app.endpoint.customerDelete}")
-    public ResponseEntity<CustomerDeleteResponse> delete(@PathVariable int id ){
+    public ResponseEntity<CustomerDeleteResponse> delete(@PathVariable int id) {
         Integer deletedCustomerId = customerService.delete(id);
         CustomerDeleteResponse customerDeleteResponse = new CustomerDeleteResponse();
         customerDeleteResponse.setId(deletedCustomerId);

@@ -1,7 +1,6 @@
 package com.example.entity.converter;
 
 import com.example.enums.Status;
-
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
